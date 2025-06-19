@@ -1,0 +1,412 @@
+
+/* Reset and Global Styles */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: "Poppins", sans-serif;
+}
+
+:root {
+--text-color: #edf3ff;
+--subheading-color: #97a7ca;
+--placeholder-color: #c3cdde;
+--primary-color: #101623;
+--secondary-color: #283045;
+--secondary-hover-color: #333e58;
+--scrollbar-color: #626a7f;
+}
+
+body.light-theme {
+    /* Light theme colors */
+--text-color: #090c13;
+--subheading-color: #7b8cae;
+--placeholder-color: #606982;
+--primary-color: #f3f7ff;
+--secondary-color: #dce6f9;
+--secondary-hover-color: #d2ddf2;
+--scrollbar-color: #a2aac2;
+}
+
+
+body {
+color: var(--text-color);
+background: var(--primary-color);
+overflow-x: hidden;
+min-height: 100vh; /* Ensure body takes at least full viewport height */
+display: flex;
+flex-direction: column; /* To push footer content to the bottom */
+}
+
+/* Container and Header */
+.container {
+padding: 32px 0 20px; /* Reduced bottom padding */
+flex-grow: 1; /* Allow container to grow and take available vertical space */
+}
+
+.container :where(.app-header, .suggestions, .chats-container, .prompt-wrapper, .disclaimer-text) {
+margin: 0 auto;
+width: 100%;
+padding: 0 20px;
+max-width: 980px;
+}
+
+/* App Header styling */
+.container .app-header {
+margin-top: 4vh;
+/*display: none;  As per your CSS, it's hidden */
+}
+
+.app-header .heading {
+font-size: 3rem;
+width: fit-content;
+background: linear-gradient(to right, #1d7efd, #8f6fff);
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.app-header .sub-heading {
+font-size: 2.6rem;
+margin-top: -5px;
+color: var(--subheading-color);
+}
+
+/* Suggestions list styling */
+.container .suggestions {
+    display: flex; /* this was missing! */
+    flex-direction: row;
+    gap: 15px;
+    margin-top: 9.5vh;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+body.chats-active .container :where(.app-header, .suggestions) {
+    display: none;
+}
+
+.suggestions::-webkit-scrollbar {
+    display: none; /* hide scrollbar in WebKit browsers */
+}
+
+.suggestions .suggestions-item {
+    width: 228px;
+    padding: 18px;
+    flex-shrink: 0;
+    display: flex;
+    cursor: pointer;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-radius: 12px;
+    background: var(--secondary-color);
+    transition: 0.3s ease;
+}
+
+.suggestions .suggestions-item:hover {
+    background: var(--secondary-hover-color);
+}
+
+.suggestions .suggestions-item .text {
+    font-size: 1.1rem;
+    text-align: left;
+    width: 100%;
+}
+
+.suggestions .suggestions-item span {
+    height: 45px;
+    width: 45px;
+    margin-top: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #1d7efd;
+    background: var(--primary-color);
+}
+
+/* Icon color overrides */
+.suggestions .suggestions-item:nth-child(2) span {
+    color: #28a745;
+}
+
+.suggestions .suggestions-item:nth-child(3) span {
+    color: #ffc107;
+}
+
+.suggestions .suggestions-item:nth-child(4) span {
+    color: #6f42c1;
+}
+
+
+/* Chats container styling */
+.chats-container {
+margin-top: 20px;
+padding-bottom: 80px;
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.chats-container .message {
+display: flex;
+align-items: flex-start;
+}
+
+
+.chats-container .user-message {
+flex-direction: row-reverse;
+}
+
+.chats-container .user-message .message-text {
+padding: 12px 16px;
+word-wrap: break-word;
+white-space: pre-line;
+border-radius: 13px 13px 3px 13px;
+background: #1d7efd;
+color: #fff;
+}
+
+.chats-container .user-message .img-attachment {
+    width: 50%;
+    margin-top: 8px;
+    border-radius: 13px 13px 13px 3px;
+    display: block;
+    align-self: flex-end;
+}
+
+  
+
+.chats-container .user-message .file-attachment {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 10px;
+    margin-top: -7px;
+    border-radius: 13px 3px 13px 13px;
+    background: var(--secondary-color);
+}
+
+.chats-container .user-message .file-attachment span {
+  color: #1d7efd;
+}
+
+.chats-container .user-message .avatar {
+height: 36px;
+width: 36px;
+flex-shrink: 0;
+border-radius: 50%;
+background: var(--secondary-color);
+border: 1px solid var(--secondary-hover-color);
+object-fit: cover;
+margin-left: 10px;
+margin-right: 0;
+}
+
+.chats-container .bot-message {
+flex-direction: row; /* Keep avatar on the left overall */
+}
+
+
+.chats-container .bot-message .message-text {
+display: flex;
+align-items: center; /* Vertically align avatar and text */
+background: var(--secondary-color);
+color: var(--text-color);
+border-radius: 13px;
+padding: 8px 12px; /* Adjust padding inside the bubble */
+word-wrap: break-word;
+white-space: pre-line;
+gap: 8px; /* Spacing between avatar and text inside the bubble */
+max-width: 75%; /* Limit width */
+}
+
+.chats-container .bot-message.loading .avatar{
+    animation: rotate 3s linear;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.chats-container .bot-message .message-text .avatar {
+height: 24px; /* Smaller avatar size within the bubble */
+width: 24px;
+border-radius: 50%;
+object-fit: cover;
+flex-shrink: 0; /* Prevent shrinking */
+}
+
+.chats-container .bot-message .message-text p {
+margin: 0; /* Remove default paragraph margins */
+}
+
+/* Prompt Section */
+.prompt-container {
+    padding: 15px 20px;
+    background: var(--primary-color);
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+  }
+  
+  .prompt-container .prompt-wrapper {
+    display: flex;
+    gap: 12px;
+    height: 48px;
+    align-items: center;
+  }
+  
+  .prompt-wrapper .prompt-form {
+    width: 100%;
+    height: 100%;
+    border-radius: 130px;
+    background: var(--secondary-color);
+    display: flex;
+    align-items: center;
+  }
+  
+  .prompt-form .prompt-input {
+    height: 100%;
+    width: 100%;
+    background: none;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    padding-left: 24px;
+    color: var(--text-color);
+    border-radius: 130px 0 0 130px;
+  }
+  
+  .prompt-form .prompt-input::placeholder {
+    color: var(--placeholder-color);
+  }
+  
+  .prompt-wrapper button {
+    width: 48px;
+    height: 48px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    color: var(--text-color);
+    background: var(--secondary-color);
+    transition: 0.3s ease;
+  }
+  
+  .prompt-wrapper :is(button:hover, .file-icon, #cancel-file-btn) {
+    background: var(--secondary-hover-color);
+  }
+  
+  .prompt-form .prompt-actions {
+    gap: 5px;
+    margin-right: 7px;
+    display: flex;
+  }
+  
+  .prompt-wrapper .prompt-form :where(.file-upload-wrapper, button, img) {
+    position: relative;
+    height: 38px;
+    width: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .prompt-form .file-upload-wrapper :where(button, img) {
+    position: absolute;
+    border-radius: 50%;
+    object-fit: cover;
+    display: none;
+  }
+  
+  .prompt-form .file-upload-wrapper.active.img-attached img,
+  .prompt-form .file-upload-wrapper.active.file-attached .file-icon,
+  .prompt-form .file-upload-wrapper.active:hover #cancel-file-btn {
+    display: block;
+  }
+  
+  .prompt-form .file-upload-wrapper #add-file-btn {
+    display: block;
+  }
+  
+  .prompt-form .file-upload-wrapper.active #add-file-btn {
+    display: none;
+  }
+  
+  .prompt-form :is(#cancel-file-btn, #stop-response-btn:hover) {
+    color: #d62939;
+  }
+  
+  .prompt-form .file-icon{
+    color: #1d7efd;
+  }
+  
+  .prompt-form #stop-response-btn,
+  body.bot-responding .prompt-form .file-upload-wrapper{
+      display: none;
+  }
+  body.bot-responding .prompt-form #stop-response-btn {
+    display: block;
+  }
+
+  .prompt-form #send-prompt-btn {
+    color: #fff;
+    display: none;
+    background: #0264e3;
+  }
+  
+  .prompt-form #send-prompt-btn:hover {
+    background: #1d7efd;
+  }
+  
+  .prompt-form .prompt-input:valid ~ .prompt-actions #send-prompt-btn {
+    display: block;
+  }
+  
+/* Text below search bar */
+.prompt-container .disclaimer-text {
+text-align: center;
+font-size: 0.9rem;
+padding: 16px 20px 0;
+color: var(--placeholder-color);
+}
+.bot-message .avatar {
+height: 36px;
+width: 36px;
+border-radius: 50%;
+object-fit: cover;
+margin-right: 10px;
+}
+
+/* Remove any extra bottom space */
+html,
+body {
+height: auto;
+}
+
+/* Responsive media query code for small screens */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 0 100px;
+    }
+
+    .app-header :is(.heading, .sub-heading) {
+        font-size: 2rem;
+        line-height: 1-4;
+    }
+
+    .prompt-form .file-upload-wrapper.active #cancel-file-btn {
+        opacity: 0;
+    }
+    .prompt-wrapper.hide-controls :where(#theme-toggle-btn, #delete-chats-btn) {
+        display: none;
+    }
+}
